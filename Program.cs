@@ -12,7 +12,9 @@ namespace CCat
     {
         static void Main(string[] args)
         {
-
+            // Sloppy code, really bad style here
+            //
+            //
             var x = Directory.GetCurrentDirectory();
             if (args.Length == 1)
             {
@@ -26,46 +28,54 @@ namespace CCat
                 }
 
 
-            }
-            Console.WriteLine(x);
 
-            var textFilePath = x; // @"C:\Users\mb2517\OneDrive - Zebra Technologies\Documents\gittips.txt";
-            var filestream = new System.IO.FileStream(textFilePath,
-                                          System.IO.FileMode.Open,
-                                          System.IO.FileAccess.Read,
-                                          System.IO.FileShare.ReadWrite);
-            var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
-            var lineOfText = string.Empty;
-            while ((lineOfText = file.ReadLine()) != null)
-            {
-                var lastPos = 0;
-                var colorCode = getBetween(lineOfText, "<color ", ">", out lastPos);
+                Console.WriteLine(x);
 
-                if (lastPos == -1)
+                var textFilePath = x; 
+                if(File.Exists(textFilePath))
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(lineOfText);
-
-                    continue;
-                }
-
-                // If here then we have some section parsing to do
-                //
-                {
-                    // Setup the color for output
-                    //
-                    switch (colorCode.ToLower())
+                    var filestream = new System.IO.FileStream(textFilePath,
+                                                  System.IO.FileMode.Open,
+                                                  System.IO.FileAccess.Read,
+                                                  System.IO.FileShare.ReadWrite);
+                    var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
+                    var lineOfText = string.Empty;
+                    while ((lineOfText = file.ReadLine()) != null)
                     {
-                        case "red":
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            break;
-                        case "yellow":
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            break;
-                    }
+                        var lastPos = 0;
+                        var colorCode = getBetween(lineOfText, "<color ", ">", out lastPos);
 
-                    Console.WriteLine(lineOfText.Substring(lastPos));
+                        if (lastPos == -1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(lineOfText);
+
+                            continue;
+                        }
+
+                        // If here then we have some section parsing to do
+                        //
+                        {
+                            // Setup the color for output
+                            //
+                            switch (colorCode.ToLower())
+                            {
+                                case "red":
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    break;
+                                case "yellow":
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    break;
+                            }
+
+                            Console.WriteLine(lineOfText.Substring(lastPos));
+                        }
+                    }
                 }
+            }
+            else
+            {
+                Console.WriteLine("Usage: ccat.exe <file name>");
             }
 
         }
