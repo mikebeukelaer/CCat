@@ -1,7 +1,0 @@
-C:\Development\CCat\bin\Debug\CCat1.exe.config
-C:\Development\CCat\bin\Debug\CCat1.exe
-C:\Development\CCat\bin\Debug\CCat1.pdb
-C:\Development\CCat\obj\Debug\CCat.csproj.AssemblyReference.cache
-C:\Development\CCat\obj\Debug\CCat.csproj.CoreCompileInputs.cache
-C:\Development\CCat\obj\Debug\CCat1.exe
-C:\Development\CCat\obj\Debug\CCat1.pdb
