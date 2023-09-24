@@ -29,7 +29,7 @@ namespace CCat
             }
             Console.WriteLine(x);
 
-            var textFilePath = x; // @"C:\Users\mb2517\OneDrive - Zebra Technologies\Documents\gittips.txt";
+            var textFilePath = x; 
             var filestream = new System.IO.FileStream(textFilePath,
                                           System.IO.FileMode.Open,
                                           System.IO.FileAccess.Read,
