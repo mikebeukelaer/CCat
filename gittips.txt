@@ -1,0 +1,10 @@
+<color yellow>- List Remote Branches
+	git branch -r
+<color yellow>- List Local Branches
+	git branch 
+<color yellow>- List Local/Remote Branches	
+	git branch -a
+	
+<color yellow>- Config (Global) Settings
+	git config --global -l
+	
