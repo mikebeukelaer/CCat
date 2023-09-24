@@ -1,0 +1,7 @@
+C:\Development\CCat\obj\Release\CCat.csproj.AssemblyReference.cache
+C:\Development\CCat\obj\Release\CCat.csproj.CoreCompileInputs.cache
+C:\Development\CCat\bin\Release\CCat.exe.config
+C:\Development\CCat\bin\Release\CCat.exe
+C:\Development\CCat\bin\Release\CCat.pdb
+C:\Development\CCat\obj\Release\CCat.exe
+C:\Development\CCat\obj\Release\CCat.pdb
