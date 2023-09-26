@@ -66,6 +66,12 @@ namespace CCat
                                 case "yellow":
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     break;
+                                case "blue":
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    break;
+                                case "black":
+                                    Console.ForegroundColor = ConsoleColor.Black;
+                                    break;
                             }
 
                             Console.WriteLine(lineOfText.Substring(lastPos));
