@@ -49,7 +49,7 @@ namespace CCat
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             Console.WriteLine(lineOfText);
-
+                            
                             continue;
                         }
 
