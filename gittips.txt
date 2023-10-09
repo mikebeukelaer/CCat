@@ -8,3 +8,7 @@
 <color yellow>- Config (Global) Settings
 	git config --global -l
 	
+	
+	
+	
+	
