@@ -161,7 +161,7 @@ namespace CCat
                 {
                     co.color = "White";
                     co.c = c.ToString();
-                    write(co);
+                    write(co);  
                   //  logSingle($"{c}");
                 }
                 else
