@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 
 namespace CCat
 {
@@ -42,6 +44,10 @@ namespace CCat
                     var lineOfText = string.Empty;
                     while ((lineOfText = file.ReadLine()) != null)
                     {
+                        processLine(lineOfText);
+                        Console.WriteLine();
+                        continue;
+
                         var lastPos = 0;
                         var colorCode = getBetween(lineOfText, "<color ", ">", out lastPos);
 
@@ -98,5 +104,129 @@ namespace CCat
             lastPos = -1;
             return "";
         }
+
+        struct CharOut
+        {
+            public string c;
+            public string color;
+        }
+        private static void write(CharOut charOut)
+        {
+
+            switch (charOut.color.ToLower())
+            {
+                case "red":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "yellow":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "blue":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "black":
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    break;
+                case "white":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
+            
+            Console.Write(charOut.c);
+        }
+        private static void processLine(string src)
+        {
+            var COLOR_TAG_START = "<color";
+            var COLOR_TAG_END = "</color>";
+            var currentColor = "White";
+
+            // each char is written with a color,
+            // the default color is white
+            // 
+            //
+            var currentPosition = 0;
+            var tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+
+
+            // Read a char at a time until we get a tag match
+            //
+            while (currentPosition < src.Length)
+            {
+                char c = src[currentPosition];
+
+                var co = new CharOut();
+
+
+                if (currentPosition < tagStartPos || tagStartPos == -1)
+                {
+                    co.color = "White";
+                    co.c = c.ToString();
+                    write(co);
+                  //  logSingle($"{c}");
+                }
+                else
+                {
+                    tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+                    if (tagStartPos == -1) { break; }
+                    var startSearchPos = tagStartPos + COLOR_TAG_START.Length;
+
+                    currentColor = GetColor(src, startSearchPos, out currentPosition);
+
+                    var tagEndPos = src.IndexOf(COLOR_TAG_END, currentPosition);
+                    var textValue = src.Substring(currentPosition, tagEndPos - currentPosition);
+                    co.color = currentColor;
+                    co.c = textValue;
+                  //  log("");
+                  //  log($"COLOR  {currentColor}");
+                  //  log($"VALUE {textValue}");
+                  //  log($"CURRENT POS : {currentPosition}");
+                  //  log($"VALUE AT CURRENT POS: {src[currentPosition]}");
+                  //  log("  ");
+                    currentPosition = tagEndPos + COLOR_TAG_END.Length - 1;
+                    write(co);
+
+
+                }
+
+
+                currentPosition++;
+                tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+                //  log($"current :{currentPosition}");
+                //  log($"tagstart :{tagStartPos}");
+
+
+            }
+        }
+        private static string GetColor(string src, int startPos, out int currentPos)
+        {
+            var retVal = string.Empty;
+            var found = false;
+            currentPos = startPos;
+            var sb = new StringBuilder();
+            // Read chars until a '>' is encountered
+            //
+            while (!found && currentPos < src.Length - 1)
+            {
+                if (src[currentPos] == '>')
+                {
+                    found = true;
+                    retVal = sb.ToString();
+
+                }
+                else
+                {
+                    if (src[currentPos] != ' ')
+                    {
+                        sb.Append(src[currentPos]);
+                    }
+
+                }
+                currentPos++;
+            }
+
+            return retVal;
+        }
+
+
     }
 }

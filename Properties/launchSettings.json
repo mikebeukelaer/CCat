@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CCat": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Development\\CCat\\gittips.txt"
+    }
+  }
+}
