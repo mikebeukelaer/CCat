@@ -44,7 +44,15 @@ namespace CCat
                     var lineOfText = string.Empty;
                     while ((lineOfText = file.ReadLine()) != null)
                     {
-                        processLine(lineOfText);
+                        try
+                        {
+                            processLine(lineOfText);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Do nothing
+                        }
+                        
                         Console.WriteLine();
                         continue;
 
