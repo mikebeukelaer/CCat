@@ -8,7 +8,3 @@
 <color yellow>- Config (Global) Settings</color>
 	<color red>git</color> config --global -l
 	
-	
-	
-	
-	
