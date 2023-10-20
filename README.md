@@ -6,4 +6,4 @@ Supported colors:
 - red
 - yellow
 
-Syntax: <color yellow>some text here </color>
+Syntax: <color yellow>some text here \</color>\
