@@ -17,23 +17,24 @@ namespace CCat
             // Sloppy code, really bad style here
             //
             //
-            var x = Directory.GetCurrentDirectory();
+            var textFilePath = Directory.GetCurrentDirectory();
+            var pageSize = 32;
             if (args.Length == 1)
             {
                 if (Path.IsPathRooted(args[0]))
                 {
-                    x = args[0];
+                    textFilePath = args[0];
                 }
                 else
                 {
-                    x = x + @"\" + args[0];
+                    textFilePath = textFilePath + @"\" + args[0];
                 }
 
 
 
-                Console.WriteLine(x);
+                Console.WriteLine($"File :  {textFilePath}");
 
-                var textFilePath = x; 
+                
                 if(File.Exists(textFilePath))
                 {
                     var filestream = new System.IO.FileStream(textFilePath,
@@ -42,6 +43,9 @@ namespace CCat
                                                   System.IO.FileShare.ReadWrite);
                     var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
                     var lineOfText = string.Empty;
+
+                    var currentLineCount = 0;
+
                     while ((lineOfText = file.ReadLine()) != null)
                     {
                         try
@@ -52,44 +56,18 @@ namespace CCat
                         {
                             // Do nothing
                         }
+                        currentLineCount++;
+                        if(currentLineCount == pageSize)
+                        {
+                            if(!PromptForContinue())
+                            {
+                                break;
+                            }
+                            currentLineCount = 0;
+                        }
                         
                         Console.WriteLine();
-                        continue;
 
-                        var lastPos = 0;
-                        var colorCode = getBetween(lineOfText, "<color ", ">", out lastPos);
-
-                        if (lastPos == -1)
-                        {
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine(lineOfText);
-                            
-                            continue;
-                        }
-
-                        // If here then we have some section parsing to do
-                        //
-                        {
-                            // Setup the color for output
-                            //
-                            switch (colorCode.ToLower())
-                            {
-                                case "red":
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    break;
-                                case "yellow":
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
-                                    break;
-                                case "blue":
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    break;
-                                case "black":
-                                    Console.ForegroundColor = ConsoleColor.Black;
-                                    break;
-                            }
-
-                            Console.WriteLine(lineOfText.Substring(lastPos));
-                        }
                     }
                 }
             }
@@ -99,6 +77,38 @@ namespace CCat
             }
 
         }
+
+        private static bool PromptForContinue()
+        {
+            var retVal = false;
+
+            ConsoleColor backgroundColor = Console.BackgroundColor;
+            ConsoleColor foregroundColor = Console.ForegroundColor;
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("");
+            Console.Write("Continue:");
+            var key = Console.ReadKey();
+            if(key.Key == ConsoleKey.Spacebar)
+            {
+                retVal = true;
+                //var x = Console.CursorLeft;
+              
+            }else if(key.Key == ConsoleKey.Q )
+            {
+                return false;
+            }
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
+
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write("                ");
+            Console.SetCursorPosition(0, Console.CursorTop-1);
+
+            return retVal;
+        }
+
         public static string getBetween(string strSource, string strStart, string strEnd, out int lastPos)
         {
             if (strSource.Contains(strStart) && strSource.Contains(strEnd))
@@ -184,12 +194,7 @@ namespace CCat
                     var textValue = src.Substring(currentPosition, tagEndPos - currentPosition);
                     co.color = currentColor;
                     co.c = textValue;
-                  //  log("");
-                  //  log($"COLOR  {currentColor}");
-                  //  log($"VALUE {textValue}");
-                  //  log($"CURRENT POS : {currentPosition}");
-                  //  log($"VALUE AT CURRENT POS: {src[currentPosition]}");
-                  //  log("  ");
+
                     currentPosition = tagEndPos + COLOR_TAG_END.Length - 1;
                     write(co);
 
@@ -199,8 +204,6 @@ namespace CCat
 
                 currentPosition++;
                 tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
-                //  log($"current :{currentPosition}");
-                //  log($"tagstart :{tagStartPos}");
 
 
             }
@@ -211,6 +214,7 @@ namespace CCat
             var found = false;
             currentPos = startPos;
             var sb = new StringBuilder();
+
             // Read chars until a '>' is encountered
             //
             while (!found && currentPos < src.Length - 1)
