@@ -1,9 +1,11 @@
 # CCat
-Color version of the cat command, only supports one color for the entire line of text
+Color version of the cat command
 
 Supported colors:
 - white (default)
 - red
 - yellow
+- blue
+- black
 
 Syntax: \<color yellow>some text here \</color>
