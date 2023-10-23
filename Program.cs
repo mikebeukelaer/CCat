@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.Data.SqlTypes;
 
 namespace CCat
 {
@@ -102,11 +103,16 @@ namespace CCat
             Console.BackgroundColor = backgroundColor;
             Console.ForegroundColor = foregroundColor;
 
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write("                ");
-            Console.SetCursorPosition(0, Console.CursorTop-1);
+            ClearLine();
 
             return retVal;
+        }
+
+        private static void ClearLine()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write("                ");
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
         }
 
         public static string getBetween(string strSource, string strStart, string strEnd, out int lastPos)
@@ -152,6 +158,23 @@ namespace CCat
             
             Console.Write(charOut.c);
         }
+
+        private static void processLineII(string src)
+        {
+
+
+            var words = src.Split(' ');
+
+            foreach(var word in words)
+            {
+                Console.WriteLine(word); ;
+            }
+
+            Console.WriteLine("--------------------------------"); ;
+
+        }
+
+
         private static void processLine(string src)
         {
             var COLOR_TAG_START = "<color";
