@@ -51,7 +51,7 @@ namespace CCat
                     {
                         try
                         {
-                            processLineII(lineOfText);
+                            processLine(lineOfText);
                         }
                         catch (Exception ex)
                         {
