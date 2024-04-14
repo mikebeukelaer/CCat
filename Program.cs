@@ -51,7 +51,7 @@ namespace CCat
                     {
                         try
                         {
-                            processLine(lineOfText);
+                            processLine(lineOfText,0);
                         }
                         catch (Exception ex)
                         {
@@ -174,8 +174,7 @@ namespace CCat
 
         }
 
-
-        private static void processLine(string src)
+        private static void processLineII(string src, int currentPosition)
         {
             var COLOR_TAG_START = "<color";
             var COLOR_TAG_END = "</color>";
@@ -185,10 +184,65 @@ namespace CCat
             // the default color is white
             // 
             //
-            var currentPosition = 0;
+            //var currentPosition = 0;
             var tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
 
+            // Read a char at a time until we get a tag match
+            //
+            while (currentPosition < src.Length)
+            {
+                char c = src[currentPosition];
 
+                var co = new CharOut();
+
+
+                if (currentPosition < tagStartPos || tagStartPos == -1)
+                {
+                    co.color = "White";
+                    co.c = c.ToString();
+                    write(co);
+                    //  logSingle($"{c}");
+                }
+                else
+                {
+                    tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+                    if (tagStartPos == -1) { break; }
+                    var startSearchPos = tagStartPos + COLOR_TAG_START.Length;
+
+                    currentColor = GetColor(src, startSearchPos, out currentPosition);
+
+                    var tagEndPos = src.IndexOf(COLOR_TAG_END, currentPosition);
+                    var textValue = src.Substring(currentPosition, tagEndPos - currentPosition);
+                    co.color = currentColor;
+                    co.c = textValue;
+
+                    currentPosition = tagEndPos + COLOR_TAG_END.Length - 1;
+                    write(co);
+
+
+                }
+
+
+                currentPosition++;
+                tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+
+
+            }
+        }
+
+        private static void processLine(string src, int currentPosition)
+        {
+            var COLOR_TAG_START = "<color";
+            var COLOR_TAG_END = "</color>";
+            var currentColor = "White";
+
+            // each char is written with a color,
+            // the default color is white
+            // 
+            //
+            //var currentPosition = 0;
+            var tagStartPos = src.IndexOf(COLOR_TAG_START, currentPosition);
+    
             // Read a char at a time until we get a tag match
             //
             while (currentPosition < src.Length)

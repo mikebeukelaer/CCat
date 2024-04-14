@@ -1,4 +1,4 @@
-<color yellow>- List Remote Branches</color>
+<color yellow>- List<color red> Remote</color> Branches</color>
 	<color red>git</color> branch -r
 <color yellow>- List Local Branches</color>
 	<color red>git</color> branch 
